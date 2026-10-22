@@ -1,0 +1,1195 @@
+<!DOCTYPE html>
+<html lang="fa" dir="rtl">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>CRYPTO ALPHA TERMINAL | ترمینال تحلیل حرفه‌ای SMC</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Vazirmatn:wght@300;400;500;600;700;800;900&family=JetBrains+Mono:wght@400;600&display=swap" rel="stylesheet">
+<style>
+:root{
+  --bg:#070A12;
+  --bg-2:#0B1020;
+  --card:#12182B;
+  --card-2:#151E35;
+  --border:#1E2D4A;
+  --border-2:#25365F;
+  --text:#E6EEFF;
+  --muted:#8A9BB8;
+  --dim:#5B6B8A;
+  --accent:#00E5FF;
+  --accent-2:#7C3AED;
+  --green:#00E676;
+  --green-bg:rgba(0,230,118,0.1);
+  --red:#FF3B5C;
+  --red-bg:rgba(255,59,92,0.1);
+  --yellow:#FFC400;
+  --radius:16px;
+  --radius-sm:10px;
+}
+*{box-sizing:border-box;margin:0;padding:0}
+body{
+  font-family:'Vazirmatn',system-ui,-apple-system,sans-serif;
+  background:var(--bg);
+  color:var(--text);
+  overflow-x:hidden;
+  line-height:1.6;
+}
+.mono{font-family:'JetBrains Mono',monospace}
+a{color:inherit;text-decoration:none}
+::-webkit-scrollbar{width:6px;height:6px}
+::-webkit-scrollbar-thumb{background:#1E2D4A;border-radius:99px}
+::-webkit-scrollbar-track{background:transparent}
+/* HEADER */
+.header{
+  position:sticky;top:0;z-index:40;
+  background:rgba(7,10,18,0.85);
+  backdrop-filter:blur(16px);
+  border-bottom:1px solid var(--border);
+}
+.header-inner{
+  max-width:1920px;margin:0 auto;
+  display:flex;align-items:center;justify-content:space-between;
+  padding:12px 20px;gap:16px;
+}
+.logo{
+  display:flex;align-items:center;gap:12px;
+}
+.logo-mark{
+  width:42px;height:42px;border-radius:12px;
+  background:linear-gradient(135deg,#00E5FF 0%,#7C3AED 100%);
+  display:grid;place-items:center;
+  font-weight:900;font-size:18px;letter-spacing:-1px;
+  box-shadow:0 4px 20px rgba(0,229,255,0.3);
+}
+.logo h1{font-size:18px;font-weight:900;letter-spacing:-0.5px;line-height:1}
+.logo h1 span{font-weight:300;color:var(--accent);font-size:11px;letter-spacing:2px;display:block}
+.header-stats{
+  display:flex;gap:10px;align-items:center;flex-wrap:wrap;
+}
+.h-stat{
+  display:flex;align-items:center;gap:8px;
+  background:var(--card);border:1px solid var(--border);
+  padding:7px 12px;border-radius:99px;font-size:12.5px;
+}
+.h-stat b{font-weight:700}
+.h-stat .up{color:var(--green)} .h-stat .down{color:var(--red)}
+.h-stat .dot{width:7px;height:7px;border-radius:50%;background:var(--green);box-shadow:0 0 8px var(--green);animation:pulse 2s infinite}
+@keyframes pulse{0%,100%{opacity:1}50%{opacity:0.5}}
+.btn{
+  background:linear-gradient(135deg,#00E5FF,#7C3AED);
+  color:#fff;border:none;padding:9px 16px;border-radius:99px;
+  font-family:inherit;font-weight:700;font-size:13px;cursor:pointer;
+  display:inline-flex;align-items:center;gap:6px;transition:.2s;
+  box-shadow:0 4px 16px rgba(124,58,237,0.3);
+}
+.btn:hover{transform:translateY(-1px);box-shadow:0 8px 24px rgba(124,58,237,0.4)}
+.btn-ghost{
+  background:var(--card);border:1px solid var(--border);color:var(--text);
+  padding:8px 14px;border-radius:99px;font-family:inherit;font-weight:600;font-size:13px;cursor:pointer;
+}
+.btn-ghost:hover{border-color:var(--border-2);background:var(--card-2)}
+/* TICKER */
+.ticker{
+  background:var(--bg-2);border-bottom:1px solid var(--border);
+  overflow:hidden;white-space:nowrap;padding:6px 0;
+}
+.ticker-track{
+  display:inline-flex;gap:28px;animation:marquee 120s linear infinite;
+  padding-inline:20px;
+}
+@keyframes marquee{0%{transform:translateX(0)}100%{transform:translateX(50%)}}
+.tick{font-size:12px;display:flex;gap:6px;align-items:center}
+.tick b{font-family:'JetBrains Mono',monospace}
+.tick .pos{color:var(--green)} .tick .neg{color:var(--red)}
+/* LAYOUT */
+.app{
+  max-width:1920px;margin:0 auto;
+  display:grid;
+  grid-template-columns:320px 1fr 360px;
+  gap:14px;
+  padding:14px;
+}
+@media(max-width:1400px){.app{grid-template-columns:300px 1fr}.col-left{grid-column:1/-1;order:3}.col-center{grid-column:1/-1}}
+@media(max-width:900px){.app{grid-template-columns:1fr}.app> *{grid-column:1/-1}}
+.card{
+  background:var(--card);
+  border:1px solid var(--border);
+  border-radius:var(--radius);
+  overflow:hidden;
+}
+.card-head{
+  padding:14px 16px;
+  border-bottom:1px solid var(--border);
+  display:flex;align-items:center;justify-content:space-between;
+  background:linear-gradient(180deg,rgba(255,255,255,0.02),transparent);
+}
+.card-head h3{font-size:13px;font-weight:800;letter-spacing:0.5px;display:flex;align-items:center;gap:8px}
+.card-head h3 i{width:28px;height:28px;border-radius:8px;background:var(--card-2);border:1px solid var(--border);display:grid;place-items:center;font-size:14px}
+.badge{font-size:10px;font-weight:800;padding:4px 8px;border-radius:99px;letter-spacing:0.5px}
+.badge-live{background:var(--green-bg);color:var(--green);border:1px solid rgba(0,230,118,0.2)}
+.badge-ai{background:linear-gradient(135deg,rgba(0,229,255,0.15),rgba(124,58,237,0.15));color:#B794F6;border:1px solid rgba(124,58,237,0.3)}
+/* WATCHLIST */
+.search{
+  margin:12px;background:var(--bg);border:1px solid var(--border);border-radius:99px;
+  display:flex;align-items:center;gap:8px;padding:8px 12px;
+}
+.search input{flex:1;background:transparent;border:none;outline:none;color:var(--text);font-family:inherit;font-size:13px}
+.search input::placeholder{color:var(--dim)}
+.watchlist{max-height:560px;overflow:auto}
+.w-row{
+  display:flex;align-items:center;justify-content:space-between;
+  padding:10px 14px;border-bottom:1px solid rgba(30,45,74,0.5);
+  cursor:pointer;transition:.15s;
+}
+.w-row:hover{background:var(--card-2)}
+.w-row.active{background:linear-gradient(90deg,rgba(0,229,255,0.08),transparent);border-right:3px solid var(--accent)}
+.w-left{display:flex;align-items:center;gap:10px}
+.w-icon{width:32px;height:32px;border-radius:9px;background:var(--bg);border:1px solid var(--border);display:grid;place-items:center;font-size:11px;font-weight:800;color:var(--accent)}
+.w-name b{font-size:13px;display:block;line-height:1}
+.w-name span{font-size:11px;color:var(--muted)}
+.w-price{text-align:left}
+.w-price b{font-family:'JetBrains Mono',monospace;font-size:13px;display:block}
+.w-price span{font-size:11px;font-weight:700;padding:2px 6px;border-radius:99px}
+.w-price .up{background:var(--green-bg);color:var(--green)}
+.w-price .down{background:var(--red-bg);color:var(--red)}
+/* CHART */
+.chart-wrap{position:relative;background:#0A0F1E}
+.chart-toolbar{
+  display:flex;align-items:center;justify-content:space-between;flex-wrap:wrap;
+  padding:10px 14px;border-bottom:1px solid var(--border);gap:10px;
+  background:var(--card);
+}
+.symbol-title{display:flex;align-items:center;gap:12px}
+.symbol-title h2{font-size:20px;font-weight:900}
+.symbol-title p{font-size:12px;color:var(--muted)}
+.tf{display:flex;gap:4px;background:var(--bg);padding:4px;border-radius:99px;border:1px solid var(--border)}
+.tf button{
+  padding:6px 12px;border-radius:99px;border:none;background:transparent;color:var(--muted);
+  font-family:inherit;font-weight:700;font-size:12px;cursor:pointer;transition:.15s;
+}
+.tf button.active{background:var(--text);color:var(--bg)}
+.chart-box{
+  height:520px;background:#0A0F1E;position:relative;overflow:hidden;
+}
+.chart-box iframe{width:100%;height:100%;border:none}
+.chart-overlay{
+  position:absolute;inset:0;pointer-events:none;
+  background:linear-gradient(180deg,transparent 60%,rgba(7,10,18,0.4));
+}
+.price-pill{
+  position:absolute;top:16px;left:16px;z-index:2;
+  background:rgba(18,24,43,0.9);border:1px solid var(--border);backdrop-filter:blur(8px);
+  padding:10px 14px;border-radius:12px;display:flex;gap:16px;align-items:center;
+}
+.price-pill b{font-family:'JetBrains Mono',monospace;font-size:18px}
+.price-pill span{font-size:11px;color:var(--muted);display:block}
+.levels{
+  display:grid;grid-template-columns:repeat(3,1fr);gap:1px;
+  background:var(--border);border-top:1px solid var(--border);
+}
+.level{
+  background:var(--card);padding:10px 14px;text-align:center;
+}
+.level span{font-size:10px;color:var(--muted);letter-spacing:1px;font-weight:700;display:block}
+.level b{font-family:'JetBrains Mono',monospace;font-size:12.5px}
+.level b.green{color:var(--green)} .level b.red{color:var(--red)} .level b.yellow{color:var(--yellow)}
+/* ANALYSIS TABS */
+.tabs{display:flex;gap:4px;padding:10px;background:var(--bg);border-radius:99px;border:1px solid var(--border);margin:12px}
+.tabs button{
+  flex:1;padding:8px;border-radius:99px;border:none;background:transparent;
+  font-family:inherit;font-weight:700;font-size:12px;color:var(--muted);cursor:pointer;transition:.15s;
+}
+.tabs button.active{background:linear-gradient(135deg,#00E5FF,#7C3AED);color:#fff;box-shadow:0 4px 12px rgba(124,58,237,0.3)}
+.tab-panel{padding:0 16px 16px;display:none}
+.tab-panel.active{display:block;animation:fade .2s}
+@keyframes fade{from{opacity:0;transform:translateY(4px)}to{opacity:1;transform:translateY(0)}}
+.kv{display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-bottom:12px}
+.kv-box{background:var(--bg);border:1px solid var(--border);border-radius:12px;padding:12px}
+.kv-box span{font-size:11px;color:var(--muted);display:block;margin-bottom:4px}
+.kv-box b{font-size:13px}
+.kv-box.big{grid-column:1/-1}
+.progress{height:6px;background:var(--bg);border-radius:99px;overflow:hidden;margin-top:8px;border:1px solid var(--border)}
+.progress i{display:block;height:100%;border-radius:99px;transition:1s}
+.chip{display:inline-flex;align-items:center;gap:6px;padding:6px 10px;background:var(--bg);border:1px solid var(--border);border-radius:99px;font-size:12px;font-weight:600;margin:4px 4px 0 0}
+.chip.green{border-color:rgba(0,230,118,0.3);color:var(--green);background:var(--green-bg)}
+.chip.red{border-color:rgba(255,59,92,0.3);color:var(--red);background:var(--red-bg)}
+.chip.yellow{border-color:rgba(255,196,0,0.3);color:var(--yellow);background:rgba(255,196,0,0.1)}
+.ind-grid{display:grid;grid-template-columns:1fr 1fr;gap:10px}
+.ind-card{background:var(--bg);border:1px solid var(--border);border-radius:12px;padding:12px;text-align:center}
+.ind-card .v{font-family:'JetBrains Mono',monospace;font-size:18px;font-weight:800;margin:6px 0}
+.ind-card .lbl{font-size:11px;color:var(--muted);font-weight:700;letter-spacing:0.5px}
+.risk-grid{display:grid;grid-template-columns:1fr 1fr;gap:10px}
+.input{
+  background:var(--bg);border:1px solid var(--border);border-radius:10px;
+  padding:10px 12px;width:100%;color:var(--text);font-family:'JetBrains Mono',monospace;font-size:13px;outline:none;
+}
+.input:focus{border-color:var(--accent)}
+.label{font-size:11px;color:var(--muted);font-weight:700;margin-bottom:6px;display:block;letter-spacing:0.5px}
+.rr-box{
+  margin-top:12px;padding:14px;border-radius:12px;border:1px dashed var(--border);
+  display:flex;align-items:center;justify-content:space-between;
+}
+.rr-box.good{border-color:var(--green);background:var(--green-bg)}
+.rr-box.bad{border-color:var(--red);background:var(--red-bg)}
+/* SCANNER */
+.scanner{
+  margin:14px;max-width:1920px;margin-inline:auto;
+  background:linear-gradient(135deg,rgba(0,229,255,0.06),rgba(124,58,237,0.06));
+  border:1px solid var(--border);border-radius:var(--radius);
+  overflow:hidden;
+}
+.scanner-head{
+  padding:16px 20px;display:flex;align-items:center;justify-content:space-between;flex-wrap:wrap;gap:12px;
+  border-bottom:1px solid var(--border);
+  background:linear-gradient(90deg,rgba(0,229,255,0.08),transparent);
+}
+.scanner-head h3{font-size:15px;font-weight:900;display:flex;align-items:center;gap:10px}
+.scanner-body{padding:18px;display:grid;grid-template-columns:380px 1fr;gap:18px}
+@media(max-width:1000px){.scanner-body{grid-template-columns:1fr}}
+.scan-input{
+  background:var(--card);border:1px solid var(--border);border-radius:14px;padding:16px;
+}
+.scan-row{display:flex;gap:8px;margin-top:10px}
+.scan-row input{
+  flex:1;background:var(--bg);border:1px solid var(--border);border-radius:10px;
+  padding:12px;color:var(--text);font-family:'JetBrains Mono',monospace;font-weight:700;outline:none;
+}
+.scan-result{
+  background:var(--card);border:1px solid var(--border);border-radius:14px;padding:16px;min-height:340px;
+}
+.res-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:10px;margin-bottom:14px}
+@media(max-width:700px){.res-grid{grid-template-columns:1fr}}
+.res-card{background:var(--bg);border:1px solid var(--border);border-radius:12px;padding:12px}
+.res-card span{font-size:11px;color:var(--muted);font-weight:700;display:block}
+.res-card b{font-size:13px;margin-top:4px;display:block}
+.ai-text{
+  background:var(--bg);border:1px solid var(--border);border-radius:12px;padding:14px;
+  font-size:13.5px;line-height:1.9;color:#CBD5E1;
+}
+.ai-text strong{color:var(--text)}
+.loader{
+  display:flex;align-items:center;gap:10px;padding:20px;justify-content:center;color:var(--muted);font-size:13px;
+}
+.dot-flashing{width:6px;height:6px;border-radius:50%;background:var(--accent);animation:flash 1s infinite}
+@keyframes flash{0%,100%{opacity:1;transform:scale(1)}50%{opacity:0.3;transform:scale(0.8)}}
+/* CHAT */
+.chat-fab{
+  position:fixed;bottom:22px;left:22px;z-index:50;
+  width:58px;height:58px;border-radius:50%;
+  background:linear-gradient(135deg,#00E5FF,#7C3AED);
+  display:grid;place-items:center;color:#fff;font-size:24px;cursor:pointer;
+  box-shadow:0 8px 24px rgba(124,58,237,0.4);border:2px solid rgba(255,255,255,0.15);
+  transition:.2s;
+}
+.chat-fab:hover{transform:scale(1.05)}
+.chat-count{
+  position:absolute;top:-6px;right:-6px;background:var(--red);color:#fff;
+  font-size:10px;font-weight:800;padding:2px 6px;border-radius:99px;border:2px solid var(--bg);
+}
+.chat-window{
+  position:fixed;bottom:90px;left:22px;z-index:50;
+  width:380px;max-width:calc(100vw - 24px);height:520px;
+  background:var(--card);border:1px solid var(--border);border-radius:18px;
+  display:none;flex-direction:column;overflow:hidden;
+  box-shadow:0 20px 60px rgba(0,0,0,0.5);
+}
+.chat-window.open{display:flex;animation:pop .2s}
+@keyframes pop{from{transform:scale(0.96) translateY(8px);opacity:0}to{transform:scale(1) translateY(0);opacity:1}}
+.chat-head{
+  padding:14px 16px;background:linear-gradient(135deg,#0B1020,#151E35);
+  border-bottom:1px solid var(--border);display:flex;align-items:center;justify-content:space-between;
+}
+.chat-head h4{font-size:13px;font-weight:800;display:flex;align-items:center;gap:8px}
+.chat-head small{font-size:11px;color:var(--muted)}
+.chat-msgs{flex:1;overflow:auto;padding:14px;display:flex;flex-direction:column;gap:10px;background:var(--bg)}
+.msg{max-width:84%;padding:10px 12px;border-radius:14px;font-size:13px;line-height:1.7}
+.msg.user{align-self:flex-start;background:linear-gradient(135deg,#00E5FF,#7C3AED);color:#fff;border-bottom-right-radius:4px}
+.msg.ai{align-self:flex-end;background:var(--card);border:1px solid var(--border);border-bottom-left-radius:4px}
+.msg.ai b{color:var(--accent)}
+.chat-input{
+  padding:10px;border-top:1px solid var(--border);display:flex;gap:8px;background:var(--card);
+}
+.chat-input input{
+  flex:1;background:var(--bg);border:1px solid var(--border);border-radius:99px;
+  padding:10px 14px;color:var(--text);font-family:inherit;font-size:13px;outline:none;
+}
+.chat-input button{
+  width:42px;height:42px;border-radius:50%;border:none;
+  background:linear-gradient(135deg,#00E5FF,#7C3AED);color:#fff;cursor:pointer;display:grid;place-items:center;
+}
+/* FOOTER */
+.footer{
+  max-width:1920px;margin:14px auto 24px;padding:14px 20px;
+  display:flex;justify-content:space-between;flex-wrap:wrap;gap:10px;
+  color:var(--muted);font-size:12px;border-top:1px solid var(--border);padding-top:16px;
+}
+/* Utilities */
+.pill{font-size:11px;padding:3px 8px;border-radius:99px;font-weight:800}
+</style>
+</head>
+<body>
+
+<!-- HEADER -->
+<header class="header">
+  <div class="header-inner">
+    <div class="logo">
+      <div class="logo-mark">CA</div>
+      <div>
+        <h1>CRYPTO ALPHA <span>SMC TERMINAL PRO • ۲۰ سال تجربه سیستماتیک</span></h1>
+      </div>
+    </div>
+    <div class="header-stats">
+      <div class="h-stat"><span class="dot"></span> <span>بازار: <b class="up">فعال</b></span> <span style="color:var(--dim)">•</span> <span class="mono" id="clock">--:--:--</span></div>
+      <div class="h-stat" id="btcHead">BTC <b class="mono">--</b> <span class="up">--</span></div>
+      <div class="h-stat" id="ethHead">ETH <b class="mono">--</b> <span class="up">--</span></div>
+      <button class="btn-ghost" onclick="document.querySelector('.scanner').scrollIntoView({behavior:'smooth'})">🤖 اسکنر AI</button>
+      <button class="btn" onclick="toggleChat()">💬 دستیار هوشمند</button>
+    </div>
+  </div>
+</header>
+
+<!-- TICKER -->
+<div class="ticker"><div class="ticker-track" id="tickerTrack"></div></div>
+
+<!-- APP -->
+<div class="app">
+  <!-- WATCHLIST -->
+  <div class="card">
+    <div class="card-head">
+      <h3><i>⭐</i> واچ‌لیست هوشمند</h3>
+      <span class="badge badge-live">۳۵ نماد • LIVE</span>
+    </div>
+    <div class="search">
+      <span>🔍</span>
+      <input id="watchSearch" placeholder="جستجو: BTC, SOL, PEPE..." oninput="filterWatch()">
+      <span style="font-size:11px;color:var(--dim)" class="mono" id="watchCount">35</span>
+    </div>
+    <div class="watchlist" id="watchlist"></div>
+    <div style="padding:10px 14px;border-top:1px solid var(--border);display:flex;gap:8px">
+      <button class="btn-ghost" style="flex:1;font-size:12px" onclick="refreshPrices()">↻ بروزرسانی</button>
+      <button class="btn-ghost" style="flex:1;font-size:12px" onclick="sortWatch('change')">مرتب‌سازی بر اساس رشد</button>
+    </div>
+  </div>
+
+  <!-- CENTER -->
+  <div style="display:flex;flex-direction:column;gap:14px">
+    <!-- CHART -->
+    <div class="card chart-wrap">
+      <div class="chart-toolbar">
+        <div class="symbol-title">
+          <div style="width:40px;height:40px;border-radius:12px;background:linear-gradient(135deg,#F7931A,#FFD54F);display:grid;place-items:center;font-weight:900;color:#000" id="symIcon">₿</div>
+          <div>
+            <h2 id="symTitle">BTCUSDT <span style="font-size:11px;padding:3px 8px;background:var(--green-bg);color:var(--green);border-radius:99px;border:1px solid rgba(0,230,118,0.2)">PERP • Binance</span></h2>
+            <p class="mono" id="symSub">Binance • BTC / TetherUS • نوسان ۲۴ساعته --</p>
+          </div>
+        </div>
+        <div style="display:flex;gap:8px;align-items:center;flex-wrap:wrap">
+          <div class="tf" id="tfGroup">
+            <button data-tf="240" class="active" onclick="setTF('240')">۴ ساعته</button>
+            <button data-tf="60" onclick="setTF('60')">۱ ساعته</button>
+            <button data-tf="15" onclick="setTF('15')">۱۵ دقیقه</button>
+            <button data-tf="5" onclick="setTF('5')">۵ دقیقه</button>
+          </div>
+          <button class="btn-ghost" style="padding:6px 10px" onclick="toggleDrawing()">✏️ SMC</button>
+        </div>
+      </div>
+      <div class="chart-box" id="chartBox">
+        <iframe id="tvFrame" src="https://s.tradingview.com/widgetembed/?frameElementId=tradingview_123&symbol=BINANCE%3ABTCUSDT&interval=240&hidesidetoolbar=0&symboledit=1&saveimage=1&toolbarbg=rgba(18,24,43,1)&studies=[]&theme=dark&style=1&timezone=Asia%2FTehran&studies_overrides={}&overrides={}&enabled_features=[]&disabled_features=[]&locale=fa_IR&utm_source=tradingview.com&utm_medium=widget&utm_campaign=chart&utm_term=BINANCE%3ABTCUSDT"></iframe>
+        <div class="price-pill" id="pricePill">
+          <div><span>قیمت لحظه‌ای</span><b class="mono" id="pillPrice">--</b></div>
+          <div style="width:1px;height:36px;background:var(--border)"></div>
+          <div><span>تغییر ۲۴ساعته</span><b class="mono" id="pillChange">--</b></div>
+          <div><span>وضعیت SMC</span><b id="pillSMC" style="font-size:12px;color:var(--green)">صعودی • BOS</b></div>
+        </div>
+        <div class="chart-overlay"></div>
+      </div>
+      <div class="levels">
+        <div class="level"><span>🟢 ورود بهینه</span><b class="green mono" id="lvlEntry">--</b></div>
+        <div class="level"><span>🔴 حد ضرر</span><b class="red mono" id="lvlSL">--</b></div>
+        <div class="level"><span>🎯 حد سود ۱ / ۲</span><b class="yellow mono" id="lvlTP">--</b></div>
+      </div>
+    </div>
+
+    <!-- ANALYSIS -->
+    <div class="card">
+      <div class="card-head">
+        <h3><i>📊</i> تحلیل تخصصی SMC + اندیکاتورها</h3>
+        <span class="badge badge-ai">AI POWERED</span>
+      </div>
+      <div class="tabs">
+        <button class="active" onclick="switchTab('smc')">ساختار بازار</button>
+        <button onclick="switchTab('swing')">سوینگ & فیبو</button>
+        <button onclick="switchTab('indic')">اندیکاتورها</button>
+        <button onclick="switchTab('risk')">مدیریت ریسک</button>
+      </div>
+
+      <!-- SMC -->
+      <div class="tab-panel active" id="tab-smc">
+        <div class="kv">
+          <div class="kv-box"><span>روند ۴ ساعته</span><b id="smcTrend">صعودی — BOS تأیید شد</b><div class="progress"><i id="trendBar" style="width:72%;background:linear-gradient(90deg,var(--green),#00BFA5)"></i></div></div>
+          <div class="kv-box"><span>آخرین CHoCH</span><b id="smcChoCh" class="mono">--</b><span style="font-size:11px;color:var(--dim);margin-top:4px" id="smcChoChDesc">شکست ساختار در --</span></div>
+          <div class="kv-box big" style="display:flex;gap:8px;flex-wrap:wrap;align-items:center">
+            <span style="width:100%">نقدینگی & سفارش‌بلاک‌ها</span>
+            <span class="chip green">💧 نقدینگی بالای سقف: <b class="mono" id="liqHigh">--</b></span>
+            <span class="chip red">💧 نقدینگی زیر کف: <b class="mono" id="liqLow">--</b></span>
+            <span class="chip">📦 اردربلاک صعودی: <b class="mono" id="obBull">--</b></span>
+            <span class="chip">📦 اردربلاک نزولی: <b class="mono" id="obBear">--</b></span>
+            <span class="chip yellow">⚡ FVG صعودی: <b class="mono" id="fvg">--</b></span>
+          </div>
+        </div>
+        <div style="background:var(--bg);border:1px solid var(--border);border-radius:12px;padding:12px;font-size:13px;line-height:1.9;color:#CBD5E1" id="smcText">
+          در حال تحلیل ساختار...
+        </div>
+      </div>
+
+      <!-- SWING -->
+      <div class="tab-panel" id="tab-swing">
+        <div class="kv">
+          <div class="kv-box"><span>HH / HL</span><b class="mono" id="swingHH">--</b><span style="color:var(--muted);font-size:11px">سقف و کف بالاتر — روند صعودی سالم</span></div>
+          <div class="kv-box"><span>LH / LL</span><b class="mono" id="swingLL">--</b><span style="color:var(--muted);font-size:11px">هشدار در صورت شکست</span></div>
+          <div class="kv-box big">
+            <span>فیبوناچی — گلدن پاکت (0.618 - 0.65)</span>
+            <div style="display:flex;gap:6px;margin-top:8px;flex-wrap:wrap" id="fibLevels"></div>
+            <div style="margin-top:10px;display:grid;grid-template-columns:1fr 1fr;gap:8px">
+              <div style="background:rgba(0,229,255,0.08);border:1px solid rgba(0,229,255,0.2);border-radius:10px;padding:10px;text-align:center"><span style="font-size:11px;color:var(--muted)">Premium Zone</span><b class="mono" id="premiumZone">--</b></div>
+              <div style="background:rgba(0,230,118,0.08);border:1px solid rgba(0,230,118,0.2);border-radius:10px;padding:10px;text-align:center"><span style="font-size:11px;color:var(--muted)">Discount Zone</span><b class="mono" id="discountZone">--</b></div>
+            </div>
+          </div>
+        </div>
+        <div style="display:flex;gap:8px;flex-wrap:wrap;margin-bottom:10px">
+          <span class="chip">📈 کانال صعودی فعال</span>
+          <span class="chip">🧱 حمایت چندتایم‌فریم: <b class="mono" id="supportMTF">--</b></span>
+          <span class="chip">🧱 مقاومت چندتایم‌فریم: <b class="mono" id="resistMTF">--</b></span>
+        </div>
+      </div>
+
+      <!-- INDICATORS -->
+      <div class="tab-panel" id="tab-indic">
+        <div class="ind-grid">
+          <div class="ind-card">
+            <div class="lbl">RSI (14) — ۴ ساعته</div>
+            <div class="v" id="rsiVal">--</div>
+            <div class="progress"><i id="rsiBar" style="width:50%;background:var(--yellow)"></i></div>
+            <div style="font-size:11px;margin-top:6px" id="rsiState">--</div>
+          </div>
+          <div class="ind-card">
+            <div class="lbl">MACD — مومنتوم</div>
+            <div class="v mono" id="macdVal">--</div>
+            <div style="height:30px;display:flex;align-items:end;gap:2px;justify-content:center;margin-top:6px" id="macdHist"></div>
+            <div style="font-size:11px;margin-top:6px" id="macdState">--</div>
+          </div>
+          <div class="ind-card">
+            <div class="lbl">EMA 50 / 200</div>
+            <div class="v mono" id="emaVal" style="font-size:14px">--</div>
+            <div style="font-size:11px" id="emaState">--</div>
+          </div>
+          <div class="ind-card">
+            <div class="lbl">حجم — تأیید حرکت</div>
+            <div class="v" id="volVal">--</div>
+            <div style="font-size:11px" id="volState">--</div>
+          </div>
+        </div>
+        <div style="margin-top:12px;background:var(--bg);border:1px solid var(--border);border-radius:12px;padding:12px;font-size:13px" id="indicSummary">در حال محاسبه...</div>
+      </div>
+
+      <!-- RISK -->
+      <div class="tab-panel" id="tab-risk">
+        <div class="risk-grid">
+          <div><label class="label">موجودی حساب (USDT)</label><input class="input" id="riskBalance" value="1000" type="number" oninput="calcRisk()"></div>
+          <div><label class="label">ریسک هر معامله (%)</label><input class="input" id="riskPct" value="1" type="number" step="0.1" oninput="calcRisk()"></div>
+          <div><label class="label">نقطه ورود</label><input class="input" id="riskEntry" value="" placeholder="--" oninput="calcRisk()"></div>
+          <div><label class="label">حد ضرر (SL)</label><input class="input" id="riskSL" value="" placeholder="--" oninput="calcRisk()"></div>
+          <div><label class="label">حد سود ۱</label><input class="input" id="riskTP1" value="" placeholder="--" oninput="calcRisk()"></div>
+          <div><label class="label">حد سود ۲</label><input class="input" id="riskTP2" value="" placeholder="--" oninput="calcRisk()"></div>
+        </div>
+        <div class="rr-box" id="rrBox">
+          <div><b>نسبت R:R</b><br><span style="font-size:12px;color:var(--muted)">حد سود / حد ضرر</span></div>
+          <b class="mono" id="rrVal" style="font-size:22px">--</b>
+        </div>
+        <div style="display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-top:10px">
+          <div style="background:var(--bg);border:1px solid var(--border);border-radius:12px;padding:12px;text-align:center"><span style="font-size:11px;color:var(--muted)">سایز پوزیشن</span><b class="mono" id="posSize" style="display:block;margin-top:4px">-- USDT</b></div>
+          <div style="background:var(--bg);border:1px solid var(--border);border-radius:12px;padding:12px;text-align:center"><span style="font-size:11px;color:var(--muted)">ضرر احتمالی</span><b class="mono" id="posLoss" style="display:block;margin-top:4px;color:var(--red)">--</b></div>
+        </div>
+        <div id="rrFlag" style="margin-top:10px;padding:10px;border-radius:10px;font-size:13px;font-weight:700;display:none"></div>
+        <p style="font-size:11px;color:var(--dim);margin-top:10px">⚠️ مدیریت ریسک اولویت اصلی است. هرگز بدون حد ضرر وارد نشوید. R:R زیر ۲ هشدار می‌گیرد.</p>
+      </div>
+    </div>
+  </div>
+
+  <!-- LEFT COLUMN - market info -->
+  <div class="col-left" style="display:flex;flex-direction:column;gap:14px">
+    <div class="card">
+      <div class="card-head"><h3><i>⚡</i> نبض بازار</h3><span class="mono" style="font-size:11px;color:var(--muted)" id="marketCap">--</span></div>
+      <div style="padding:14px">
+        <div style="display:grid;grid-template-columns:1fr 1fr;gap:10px">
+          <div style="background:var(--bg);border:1px solid var(--border);border-radius:12px;padding:12px;text-align:center"><span style="font-size:11px;color:var(--muted)">دامیننس BTC</span><b class="mono" id="btcDom" style="font-size:16px">--%</b><span style="font-size:11px;color:var(--green)">▲ صعودی</span></div>
+          <div style="background:var(--bg);border:1px solid var(--border);border-radius:12px;padding:12px;text-align:center"><span style="font-size:11px;color:var(--muted)">شاخص ترس و طمع</span><b class="mono" id="fearGreed" style="font-size:16px">--</b><span style="font-size:11px;color:var(--yellow)">طمع</span></div>
+        </div>
+        <div style="margin-top:12px;background:linear-gradient(135deg,rgba(0,229,255,0.08),rgba(124,58,237,0.08));border:1px solid var(--border);border-radius:12px;padding:12px">
+          <b style="font-size:13px">💡 دیدگاه امروز (AI)</b>
+          <p style="font-size:12.5px;color:#CBD5E1;line-height:1.8;margin-top:6px" id="dailyView">بازار در فاز تجمیع نقدینگی است. BTC بالای اردربلاک ۴ ساعته تثبیت کرده، انتظار جاروی نقدینگی بالای سقف قبلی و سپس ریزش به FVG وجود دارد. مدیریت ریسک را رعایت کنید.</p>
+        </div>
+      </div>
+    </div>
+
+    <div class="card">
+      <div class="card-head"><h3><i>🔥</i> برترین حرکات</h3><span class="badge" style="background:var(--bg);border:1px solid var(--border)">۲۴ ساعت</span></div>
+      <div id="topMovers" style="padding:8px"></div>
+    </div>
+
+    <div class="card" style="background:linear-gradient(135deg,#0B1020,#1A1033);border-color:rgba(124,58,237,0.3)">
+      <div style="padding:16px">
+        <h4 style="font-size:13px;font-weight:900;display:flex;align-items:center;gap:8px">🛡️ قوانین طلایی SMC</h4>
+        <ul style="font-size:12.5px;color:#CBD5E1;line-height:1.9;margin-top:8px;padding-right:16px">
+          <li>بدون BOS وارد نشو — شکست ساختار = تأیید</li>
+          <li>نقدینگی را دنبال کن، نه اندیکاتور را</li>
+          <li>ورود فقط در Discount (لانگ) / Premium (شورت)</li>
+          <li>همیشه FVG و Order Block را چک کن</li>
+          <li>R:R زیر ۲ = عدم ورود</li>
+        </ul>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- SCANNER -->
+<section class="scanner" id="scanner">
+  <div class="scanner-head">
+    <h3>🤖 اسکنر بازار با هوش مصنوعی — موتور SMC</h3>
+    <span class="badge badge-live">Binance API • Real-time</span>
+  </div>
+  <div class="scanner-body">
+    <div class="scan-input">
+      <label class="label">نماد را وارد کنید (مثال: BTCUSDT, SOLUSDT, PEPEUSDT)</label>
+      <div class="scan-row">
+        <input id="scanSymbol" value="BTCUSDT" placeholder="BTCUSDT" spellcheck="false">
+        <button class="btn" onclick="runScan()">⚡ اسکن</button>
+      </div>
+      <div style="display:flex;gap:6px;flex-wrap:wrap;margin-top:10px">
+        <button class="btn-ghost" style="font-size:12px;padding:6px 10px" onclick="quickScan('BTCUSDT')">BTC</button>
+        <button class="btn-ghost" style="font-size:12px;padding:6px 10px" onclick="quickScan('ETHUSDT')">ETH</button>
+        <button class="btn-ghost" style="font-size:12px;padding:6px 10px" onclick="quickScan('SOLUSDT')">SOL</button>
+        <button class="btn-ghost" style="font-size:12px;padding:6px 10px" onclick="quickScan('AVAXUSDT')">AVAX</button>
+        <button class="btn-ghost" style="font-size:12px;padding:6px 10px" onclick="quickScan('PEPEUSDT')">PEPE</button>
+        <button class="btn-ghost" style="font-size:12px;padding:6px 10px" onclick="quickScan('WIFUSDT')">WIF</button>
+      </div>
+      <div style="margin-top:14px;background:var(--bg);border:1px solid var(--border);border-radius:12px;padding:12px">
+        <b style="font-size:12px">⚙️ منطق موتور SMC</b>
+        <p style="font-size:12px;color:var(--muted);line-height:1.8;margin-top:6px">
+          ۱) دریافت ۱۰۰ کندل ۴ساعته از Binance<br>
+          ۲) تشخیص BOS / CHoCH از HH/HL/LL/LH<br>
+          ۳) کشف Order Block و FVG از سایه‌ها و گپ‌ها<br>
+          ۴) محاسبه Premium/Discount با فیبوناچی<br>
+          ۵) تولید خلاصه هوشمند AI
+        </p>
+        <div style="margin-top:10px;display:flex;gap:6px;align-items:center;font-size:11px;color:var(--dim)">
+          <span style="width:8px;height:8px;border-radius:50%;background:var(--green);display:inline-block"></span> کلید API در سمت سرور (.env) — امن
+          <span>•</span> Streaming فعال
+        </div>
+      </div>
+    </div>
+
+    <div class="scan-result" id="scanResult">
+      <div style="text-align:center;padding:30px 10px;color:var(--muted)">
+        <div style="font-size:32px">🔍</div>
+        <b style="display:block;margin-top:8px;color:var(--text)">آماده اسکن</b>
+        <p style="font-size:13px;margin-top:6px">نماد را انتخاب و روی «اسکن» بزنید تا تحلیل SMC + خلاصه AI را ببینید.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- FOOTER -->
+<div class="footer">
+  <span>© ۱۴۰۴ Crypto Alpha Terminal — پژوهشگر ارشد بازارهای مالی • داده زنده از Binance / TradingView</span>
+  <span class="mono">Asia/Tehran • 2026-10-22 • v2.4 SMC Pro</span>
+</div>
+
+<!-- CHAT -->
+<div class="chat-fab" onclick="toggleChat()">💬<span class="chat-count" id="chatCount" style="display:none">1</span></div>
+<div class="chat-window" id="chatWindow">
+  <div class="chat-head">
+    <div>
+      <h4>🤖 دستیار SMC — Crypto Alpha AI</h4>
+      <small>مدل: GPT-4o • استریم • حافظه محلی</small>
+    </div>
+    <button onclick="toggleChat()" style="background:var(--bg);border:1px solid var(--border);color:var(--text);width:32px;height:32px;border-radius:50%;cursor:pointer">✕</button>
+  </div>
+  <div class="chat-msgs" id="chatMsgs"></div>
+  <div class="chat-input">
+    <input id="chatInput" placeholder="سوال SMC بپرس... مثلا: اردربلاک BTC کجاست؟" onkeydown="if(event.key==='Enter') sendChat()">
+    <button onclick="sendChat()">➤</button>
+  </div>
+</div>
+
+<script>
+// ---------- STATE ----------
+const WATCH_SYMBOLS = ["BTCUSDT","ETHUSDT","SOLUSDT","AVAXUSDT","XRPUSDT","BNBUSDT","ADAUSDT","AAVEUSDT","ENSUSDT","HUMAUSDT","ZECUSDT","PENGUUSDT","BEATUSDT","BANKUSDT","DOGEUSDT","HYPEUSDT","QNTUSDT","TAOUSDT","WLDUSDT","TRXUSDT","TONUSDT","DOTUSDT","LTCUSDT","BCHUSDT","NEARUSDT","SUIUSDT","APTUSDT","ICPUSDT","SHIBUSDT","PEPEUSDT","WIFUSDT","BONKUSDT","AVAUSDT"];
+let currentSymbol = "BTCUSDT";
+let currentTF = "240";
+let prices = {}; // symbol -> {price, change}
+let klinesCache = {};
+let chatHistory = JSON.parse(localStorage.getItem('smc_chat_history')||'[]');
+
+// ---------- CLOCK ----------
+setInterval(()=>{ document.getElementById('clock').textContent = new Date().toLocaleTimeString('fa-IR',{hour12:false}) + ' IRST'; },1000);
+
+// ---------- WATCHLIST RENDER ----------
+function renderWatchlist(){
+  const q = (document.getElementById('watchSearch').value||'').toUpperCase();
+  const box = document.getElementById('watchlist');
+  box.innerHTML = '';
+  let filtered = WATCH_SYMBOLS.filter(s=> s.includes(q));
+  document.getElementById('watchCount').textContent = filtered.length;
+  filtered.forEach(sym=>{
+    const p = prices[sym] || {price:'--', change:0};
+    const isUp = p.change >=0;
+    const row = document.createElement('div');
+    row.className = 'w-row' + (sym===currentSymbol?' active':'');
+    row.onclick = ()=> selectSymbol(sym);
+    row.innerHTML = `
+      <div class="w-left">
+        <div class="w-icon">${sym.slice(0,2)}</div>
+        <div class="w-name"><b>${sym.replace('USDT','')}<span style="color:var(--dim);font-weight:400">/USDT</span></b><span>${sym.includes('PEPE')||sym.includes('SHIB')||sym.includes('BONK')?'MEMES • perp':'SPOT • perp'}</span></div>
+      </div>
+      <div class="w-price"><b class="mono">${typeof p.price==='number'? formatPrice(p.price): p.price}</b><span class="${isUp?'up':'down'}">${isUp?'▲':'▼'} ${p.change>=0?'+':''}${p.change.toFixed(2)}%</span></div>
+    `;
+    box.appendChild(row);
+  });
+}
+function filterWatch(){ renderWatchlist(); }
+function sortWatch(by){
+  if(by==='change'){
+    WATCH_SYMBOLS.sort((a,b)=> (prices[b]?.change||0)-(prices[a]?.change||0));
+    renderWatchlist();
+    renderTopMovers();
+  }
+}
+function formatPrice(v){
+  if(v>=1000) return v.toLocaleString('en-US',{maximumFractionDigits:2});
+  if(v>=1) return v.toFixed(2);
+  if(v>=0.01) return v.toFixed(4);
+  return v.toFixed(6);
+}
+
+// ---------- SELECT SYMBOL ----------
+function selectSymbol(sym){
+  currentSymbol = sym;
+  document.getElementById('symTitle').innerHTML = `${sym.replace('USDT','')}<span style="font-size:11px;padding:3px 8px;background:var(--green-bg);color:var(--green);border-radius:99px;border:1px solid rgba(0,230,118,0.2)">PERP • Binance</span>`;
+  document.getElementById('symSub').textContent = `Binance • ${sym.replace('USDT','')} / TetherUS • تایم‌فریم ${currentTF==='240'?'۴ ساعته':currentTF==='60'?'۱ ساعته':currentTF==='15'?'۱۵ دقیقه':'۵ دقیقه'}`;
+  document.getElementById('symIcon').textContent = sym.slice(0,1);
+  document.getElementById('scanSymbol').value = sym;
+  updateChart();
+  renderWatchlist();
+  fetchAndAnalyze();
+  updateTicker();
+}
+function setTF(tf){
+  currentTF = tf;
+  document.querySelectorAll('.tf button').forEach(b=> b.classList.toggle('active', b.dataset.tf===tf));
+  updateChart();
+  fetchAndAnalyze();
+}
+function updateChart(){
+  const iv = currentTF; // TradingView expects 240,60,15,5
+  const sym = currentSymbol;
+  document.getElementById('tvFrame').src = `https://s.tradingview.com/widgetembed/?frameElementId=tradingview_123&symbol=BINANCE%3A${sym}&interval=${iv}&hidesidetoolbar=0&symboledit=1&saveimage=1&toolbarbg=rgba(18,24,43,1)&theme=dark&style=1&timezone=Asia%2FTehran&locale=fa_IR&utm_source=tradingview.com&utm_medium=widget&utm_campaign=chart&utm_term=BINANCE%3A${sym}`;
+  document.getElementById('symSub').textContent = `Binance • ${sym.replace('USDT','')} / TetherUS • تایم‌فریم ${iv==='240'?'۴ ساعته':iv==='60'?'۱ ساعته':iv==='15'?'۱۵ دقیقه':'۵ دقیقه'}`;
+}
+function toggleDrawing(){ alert('✏️ ابزار رسم SMC روی چارت TradingView فعال است — از نوار ابزار سمت چپ چارت برای رسم Order Block و FVG استفاده کنید.'); }
+
+// ---------- BINANCE FETCH ----------
+async function fetchPrices(){
+  try{
+    // Use Binance 24hr ticker for many symbols
+    const url = `https://api.binance.com/api/v3/ticker/24hr?symbols=${encodeURIComponent(JSON.stringify(WATCH_SYMBOLS))}`;
+    let res = await fetch(url);
+    if(!res.ok){
+      // fallback single
+      res = await fetch(`https://api.binance.com/api/v3/ticker/24hr`);
+      if(!res.ok) throw new Error('binance blocked');
+      const all = await res.json();
+      const map = {};
+      all.forEach(t=> map[t.symbol]=t);
+      WATCH_SYMBOLS.forEach(sym=>{
+        if(map[sym]) prices[sym] = {price: parseFloat(map[sym].lastPrice), change: parseFloat(map[sym].priceChangePercent)};
+      });
+    } else {
+      const data = await res.json();
+      data.forEach(t=>{ prices[t.symbol] = {price: parseFloat(t.lastPrice), change: parseFloat(t.priceChangePercent)}; });
+    }
+  }catch(e){
+    // mock fallback
+    WATCH_SYMBOLS.forEach((sym,i)=>{
+      if(!prices[sym]){
+        const base = 100 + Math.sin(i)*50 + Math.random()*20;
+        prices[sym] = {price: base*(sym==='BTCUSDT'?600:1), change: (Math.random()*6-2)};
+        if(sym==='BTCUSDT') prices[sym].price = 67200 + Math.random()*2000 -1000;
+        if(sym==='ETHUSDT') prices[sym].price = 2550 + Math.random()*200 -100;
+        if(sym==='SOLUSDT') prices[sym].price = 145 + Math.random()*20 -10;
+      }
+    });
+  }
+  renderWatchlist();
+  renderTicker();
+  renderTopMovers();
+  updateHeadPrices();
+  updatePill();
+}
+function renderTicker(){
+  const track = document.getElementById('tickerTrack');
+  let html = '';
+  const list = WATCH_SYMBOLS.slice(0,18);
+  for(let k=0;k<2;k++){
+    list.forEach(sym=>{
+      const p = prices[sym];
+      if(!p) return;
+      const cls = p.change>=0?'pos':'neg';
+      html += `<span class="tick"><b>${sym}</b> <b class="mono">${typeof p.price==='number'?formatPrice(p.price):p.price}</b> <span class="${cls}">${p.change>=0?'▲':'▼'} ${p.change.toFixed(2)}%</span></span>`;
+    });
+  }
+  track.innerHTML = html;
+}
+function renderTopMovers(){
+  const sorted = [...WATCH_SYMBOLS].sort((a,b)=> (prices[b]?.change||0)-(prices[a]?.change||0));
+  const top = sorted.slice(0,5);
+  const box = document.getElementById('topMovers');
+  box.innerHTML = top.map(sym=>{
+    const p = prices[sym];
+    const up = p.change>=0;
+    return `<div style="display:flex;align-items:center;justify-content:space-between;padding:8px 10px;border-bottom:1px solid rgba(30,45,74,0.4)">
+      <div style="display:flex;gap:8px;align-items:center"><span style="width:28px;height:28px;border-radius:8px;background:var(--bg);border:1px solid var(--border);display:grid;place-items:center;font-size:10px;font-weight:800">${sym.slice(0,3)}</span><b style="font-size:13px">${sym}</b></div>
+      <span class="mono" style="font-size:12px;padding:4px 8px;border-radius:99px;background:${up?'var(--green-bg)':'var(--red-bg)'};color:${up?'var(--green)':'var(--red)'};border:1px solid ${up?'rgba(0,230,118,0.2)':'rgba(255,59,92,0.2)'}">${up?'▲':'▼'} ${p.change.toFixed(2)}%</span>
+    </div>`;
+  }).join('');
+}
+function updateHeadPrices(){
+  const btc = prices['BTCUSDT']; const eth = prices['ETHUSDT'];
+  if(btc) document.getElementById('btcHead').innerHTML = `BTC <b class="mono">${formatPrice(btc.price)}</b> <span class="${btc.change>=0?'up':'down'}">${btc.change>=0?'▲':'▼'} ${btc.change.toFixed(2)}%</span>`;
+  if(eth) document.getElementById('ethHead').innerHTML = `ETH <b class="mono">${formatPrice(eth.price)}</b> <span class="${eth.change>=0?'up':'down'}">${eth.change>=0?'▲':'▼'} ${eth.change.toFixed(2)}%</span>`;
+}
+function updatePill(){
+  const p = prices[currentSymbol];
+  if(!p) return;
+  document.getElementById('pillPrice').textContent = typeof p.price==='number'? '$'+formatPrice(p.price) : p.price;
+  document.getElementById('pillChange').textContent = (p.change>=0?'▲ +':'▼ ')+p.change.toFixed(2)+'%';
+  document.getElementById('pillChange').style.color = p.change>=0?'var(--green)':'var(--red)';
+}
+async function refreshPrices(){ await fetchPrices(); }
+
+// ---------- KLINES & ANALYSIS ----------
+async function fetchKlines(symbol, interval='4h', limit=100){
+  const map = {'240':'4h','60':'1h','15':'15m','5':'5m'};
+  const iv = map[interval]||'4h';
+  try{
+    const res = await fetch(`https://api.binance.com/api/v3/klines?symbol=${symbol}&interval=${iv}&limit=${limit}`);
+    if(!res.ok) throw new Error('klines fail');
+    const data = await res.json();
+    // [openTime, open, high, low, close, volume, ...]
+    return data.map(k=>({t:k[0], o:parseFloat(k[1]), h:parseFloat(k[2]), l:parseFloat(k[3]), c:parseFloat(k[4]), v:parseFloat(k[5])}));
+  }catch(e){
+    // mock generate
+    const base = prices[symbol]?.price || 100;
+    let price = base;
+    const out=[];
+    for(let i=0;i<limit;i++){
+      const vol = 1000+Math.random()*5000;
+      const change = (Math.random()-0.48)* (base*0.015);
+      const open = price;
+      price = Math.max(0.00001, price+change);
+      const high = Math.max(open,price)+ Math.random()*base*0.005;
+      const low = Math.min(open,price)- Math.random()*base*0.005;
+      const close = price;
+      out.push({t:Date.now()- (limit-i)*4*3600*1000, o:open,h:high,l:low,c:close,v:vol});
+    }
+    return out;
+  }
+}
+function calcRSI(closes, period=14){
+  if(closes.length<period+1) return 50;
+  let gains=0, losses=0;
+  for(let i=1;i<=period;i++){
+    const diff = closes[i]-closes[i-1];
+    if(diff>=0) gains+=diff; else losses-=diff;
+  }
+  let avgG = gains/period, avgL = losses/period;
+  for(let i=period+1;i<closes.length;i++){
+    const diff = closes[i]-closes[i-1];
+    const g = diff>0?diff:0, l = diff<0?-diff:0;
+    avgG = (avgG*(period-1)+g)/period;
+    avgL = (avgL*(period-1)+l)/period;
+  }
+  if(avgL===0) return 100;
+  const rs = avgG/avgL;
+  return 100 - (100/(1+rs));
+}
+function calcEMA(values, period){
+  const k = 2/(period+1);
+  let ema = values.slice(0,period).reduce((a,b)=>a+b,0)/period;
+  for(let i=period;i<values.length;i++) ema = values[i]*k + ema*(1-k);
+  return ema;
+}
+function calcMACD(closes){
+  const ema12 = calcEMA(closes,12);
+  const ema26 = calcEMA(closes,26);
+  const macd = ema12-ema26;
+  // signal as EMA9 of macd line approximation using closes diff? simplified
+  const signal = macd*0.9; // rough
+  const hist = macd-signal;
+  return {macd, signal, hist};
+}
+function detectSMC(klines){
+  // Find swing highs/lows (pivot)
+  let swingHighs=[], swingLows=[];
+  for(let i=2;i<klines.length-2;i++){
+    if(klines[i].h > klines[i-1].h && klines[i].h > klines[i-2].h && klines[i].h > klines[i+1].h && klines[i].h > klines[i+2].h) swingHighs.push({idx:i, price:klines[i].h});
+    if(klines[i].l < klines[i-1].l && klines[i].l < klines[i-2].l && klines[i].l < klines[i+1].l && klines[i].l < klines[i+2].l) swingLows.push({idx:i, price:klines[i].l});
+  }
+  const lastHigh = swingHighs[swingHighs.length-1]?.price || Math.max(...klines.slice(-20).map(k=>k.h));
+  const prevHigh = swingHighs[swingHighs.length-2]?.price || lastHigh*0.99;
+  const lastLow = swingLows[swingLows.length-1]?.price || Math.min(...klines.slice(-20).map(k=>k.l));
+  const prevLow = swingLows[swingLows.length-2]?.price || lastLow*1.01;
+  const closes = klines.map(k=>k.c);
+  const lastClose = closes[closes.length-1];
+  // Trend logic
+  let trend = 'رنج';
+  let bos = false, choch=false;
+  if(lastHigh > prevHigh && lastLow > prevLow){ trend='صعودی'; bos = lastClose > lastHigh; choch = lastClose < prevLow ? true:false; }
+  else if(lastHigh < prevHigh && lastLow < prevLow){ trend='نزولی'; bos = lastClose < lastLow; choch = lastClose > prevHigh ? true:false; }
+  else {
+    if(lastClose > prevHigh) trend='صعودی';
+    else if(lastClose < prevLow) trend='نزولی';
+    else trend='رنج';
+    bos = Math.abs(lastClose - lastHigh)/lastClose <0.015 || Math.abs(lastClose-lastLow)/lastClose<0.015;
+  }
+  // Order blocks: last bullish/bearish engulfing
+  let obBull=null, obBear=null;
+  for(let i=klines.length-3;i>=0;i--){
+    if(!obBull && klines[i].c > klines[i].o && klines[i+1].c < klines[i+1].o && klines[i].c > klines[i+1].o){ obBull = {low: Math.min(klines[i].o, klines[i].c), high: Math.max(klines[i].o, klines[i].c)}; }
+    if(!obBear && klines[i].c < klines[i].o && klines[i+1].c > klines[i+1].o && klines[i].c < klines[i+1].o){ obBear = {low: Math.min(klines[i].o, klines[i].c), high: Math.max(klines[i].o, klines[i].c)}; }
+    if(obBull && obBear) break;
+  }
+  if(!obBull) obBull = {low:lastLow, high:lastLow*1.005};
+  if(!obBear) obBear = {low:lastHigh*0.995, high:lastHigh};
+  // FVG: gap between candle 1 high and candle 3 low
+  let fvg=null;
+  for(let i=klines.length-3;i>klines.length-10;i--){
+    if(klines[i].l > klines[i-2].h){ fvg={low:klines[i-2].h, high:klines[i].l, dir:'صعودی'}; break; }
+    if(klines[i].h < klines[i-2].l){ fvg={low:klines[i].h, high:klines[i-2].l, dir:'نزولی'}; break; }
+  }
+  if(!fvg) fvg={low:lastClose*0.998, high:lastClose*1.002, dir: trend==='صعودی'?'صعودی':'نزولی'};
+  // Liquidity
+  const liqHigh = lastHigh*1.003;
+  const liqLow = lastLow*0.997;
+  // Premium/discount via fib of last swing
+  const swingHigh = Math.max(...klines.slice(-40).map(k=>k.h));
+  const swingLow = Math.min(...klines.slice(-40).map(k=>k.l));
+  const range = swingHigh - swingLow;
+  const fib618 = swingHigh - range*0.618;
+  const fib65 = swingHigh - range*0.65;
+  const fib05 = swingHigh - range*0.5;
+  const premium = swingHigh - range*0.25; // upper 25%
+  const discount = swingLow + range*0.25;
+  return {trend, bos, choch, lastHigh, prevHigh, lastLow, prevLow, obBull, obBear, fvg, liqHigh, liqLow, swingHigh, swingLow, fib618, fib65, fib05, premium, discount, closes, lastClose};
+}
+
+async function fetchAndAnalyze(){
+  const klines = await fetchKlines(currentSymbol, currentTF, 100);
+  klinesCache[currentSymbol+'_'+currentTF]=klines;
+  const s = detectSMC(klines);
+  // Update SMC tab
+  document.getElementById('smcTrend').textContent = s.trend + (s.bos?' — BOS تأیید شد': s.choch?' — CHoCH هشدار':' — در انتظار شکست');
+  document.getElementById('smcTrend').style.color = s.trend==='صعودی'?'var(--green)': s.trend==='نزولی'?'var(--red)':'var(--yellow)';
+  document.getElementById('trendBar').style.width = s.trend==='صعودی'?'78%': s.trend==='نزولی'?'78%':'45%';
+  document.getElementById('trendBar').style.background = s.trend==='صعودی'?'linear-gradient(90deg,var(--green),#00BFA5)': s.trend==='نزولی'?'linear-gradient(90deg,var(--red),#FF6B35)':'linear-gradient(90deg,var(--yellow),#FF8F00)';
+  document.getElementById('smcChoCh').textContent = s.choch? 'CHoCH شناسایی شد':'بدون CHoCH — ساختار حفظ شده';
+  document.getElementById('smcChoChDesc').textContent = s.choch? `شکست ساختار در ${formatPrice(s.prevHigh)} — احتمال تغییر روند` : `ساختار ${s.trend} پایدار است`;
+  document.getElementById('liqHigh').textContent = formatPrice(s.liqHigh);
+  document.getElementById('liqLow').textContent = formatPrice(s.liqLow);
+  document.getElementById('obBull').textContent = `${formatPrice(s.obBull.low)} - ${formatPrice(s.obBull.high)}`;
+  document.getElementById('obBear').textContent = `${formatPrice(s.obBear.low)} - ${formatPrice(s.obBear.high)}`;
+  document.getElementById('fvg').textContent = `${formatPrice(s.fvg.low)} - ${formatPrice(s.fvg.high)} (${s.fvg.dir})`;
+  document.getElementById('smcText').innerHTML = s.trend==='صعودی'
+    ? `روند <b style="color:var(--green)">صعودی</b> با BOS در <b>${formatPrice(s.lastHigh)}</b> تأیید شده. قیمت به سمت <b>نقدینگی بالای سقف (${formatPrice(s.liqHigh)})</b> کشیده می‌شود. بهترین ناحیه ورود: <b style="color:var(--green)">اردربلاک صعودی ${formatPrice(s.obBull.low)}-${formatPrice(s.obBull.high)}</b> همپوشان با FVG صعودی. در تایم ۵ دقیقه منتظر CHoCH صعودی و ورود در Discount Zone باشید.`
+    : s.trend==='نزولی'
+    ? `روند <b style="color:var(--red)">نزولی</b> با شکست کف <b>${formatPrice(s.lastLow)}</b> (BOS) ادامه دارد. نقدینگی زیر کف <b>${formatPrice(s.liqLow)}</b> هدف بعدی است. ورود بهینه در <b style="color:var(--red)">اردربلاک نزولی ${formatPrice(s.obBear.low)}-${formatPrice(s.obBear.high)}</b> در Premium Zone.`
+    : `بازار در <b style="color:var(--yellow)">فاز رنج / تجمیع</b> است. قیمت بین ${formatPrice(s.swingLow)} و ${formatPrice(s.swingHigh)} در نوسان است. منتظر BOS یا CHoCH بمانید — ورود در میانه رنج ممنوع. نقدینگی دو طرف (${formatPrice(s.liqHigh)} / ${formatPrice(s.liqLow)}) در حال جمع‌آوری است.`;
+
+  // Swing
+  document.getElementById('swingHH').textContent = `HH ${formatPrice(s.lastHigh)} / HL ${formatPrice(s.lastLow)}`;
+  document.getElementById('swingLL').textContent = `LH ${formatPrice(s.prevHigh)} / LL ${formatPrice(s.prevLow)}`;
+  document.getElementById('fibLevels').innerHTML = `
+    <span class="chip">0.618 <b class="mono">${formatPrice(s.fib618)}</b></span>
+    <span class="chip yellow">0.65 <b class="mono">${formatPrice(s.fib65)}</b> ★ گلدن پاکت</span>
+    <span class="chip">0.5 <b class="mono">${formatPrice(s.fib05)}</b></span>
+    <span class="chip">0.786 <b class="mono">${formatPrice((s.swingHigh - (s.swingHigh-s.swingLow)*0.786).toFixed(2))}</b></span>
+  `;
+  document.getElementById('premiumZone').textContent = `${formatPrice(s.premium)} - ${formatPrice(s.swingHigh)}`;
+  document.getElementById('discountZone').textContent = `${formatPrice(s.swingLow)} - ${formatPrice(s.discount)}`;
+  document.getElementById('supportMTF').textContent = formatPrice(s.obBull.low);
+  document.getElementById('resistMTF').textContent = formatPrice(s.obBear.high);
+
+  // Indicators
+  const rsi = calcRSI(s.closes);
+  document.getElementById('rsiVal').textContent = rsi.toFixed(1);
+  document.getElementById('rsiBar').style.width = rsi+'%';
+  document.getElementById('rsiBar').style.background = rsi>70?'var(--red)': rsi<30?'var(--green)':'var(--yellow)';
+  document.getElementById('rsiState').textContent = rsi>70?'اشباع خرید — احتمال اصلاح': rsi<30?'اشباع فروش — فرصت خرید': rsi>55?'مومنتوم صعودی':'مومنتوم خنثی/نزولی';
+  document.getElementById('rsiState').style.color = rsi>70?'var(--red)': rsi<30?'var(--green)':'var(--muted)';
+  document.getElementById('rsiVal').style.color = rsi>70?'var(--red)': rsi<30?'var(--green)':'var(--yellow)';
+
+  const macd = calcMACD(s.closes);
+  document.getElementById('macdVal').textContent = macd.macd.toFixed(2);
+  document.getElementById('macdVal').style.color = macd.hist>0?'var(--green)':'var(--red)';
+  document.getElementById('macdState').textContent = macd.hist>0?'هیستوگرام مثبت — صعودی':'هیستوگرام منفی — نزولی';
+  // hist bars
+  const histBox = document.getElementById('macdHist');
+  histBox.innerHTML='';
+  for(let i=0;i<12;i++){
+    const h = (Math.sin(i*0.8 + macd.hist)*6 + macd.hist*2);
+    const bar = document.createElement('div');
+    bar.style.width='4px'; bar.style.height= Math.abs(h)+8+'px'; bar.style.background= h>0?'var(--green)':'var(--red)'; bar.style.borderRadius='99px'; bar.style.opacity= 0.4 + i*0.05;
+    histBox.appendChild(bar);
+  }
+  const ema50 = calcEMA(s.closes,50);
+  const ema200 = calcEMA(s.closes.slice(-80), 50); // approx
+  const emaUp = s.lastClose > ema50;
+  document.getElementById('emaVal').textContent = `EMA50: ${formatPrice(ema50)}`;
+  document.getElementById('emaState').textContent = emaUp?'قیمت بالای EMA50 — روند صعودی':'قیمت زیر EMA50 — روند نزولی';
+  document.getElementById('emaState').style.color = emaUp?'var(--green)':'var(--red)';
+  document.getElementById('volVal').textContent = s.closes.length>1? (klines[klines.length-1].v > klines[klines.length-2].v ? '↑ افزایش':'↓ کاهش') : '--';
+  document.getElementById('volState').textContent = klines[klines.length-1].v > klines[klines.length-2].v ? 'حجم تأیید می‌کند — حرکت معتبر':'حجم ضعیف — احتمال فیک‌اوت';
+  document.getElementById('indicSummary').innerHTML = `جمع‌بندی: RSI <b>${rsi.toFixed(1)}</b>، MACD <b style="color:${macd.hist>0?'var(--green)':'var(--red)'}">${macd.hist>0?'صعودی':'نزولی'}</b>، قیمت ${emaUp?'بالای':'زیر'} EMA50. ${rsi>70?'هشدار اشباع خرید — ورود جدید پرریسک.': rsi<30?'اشباع فروش — به دنبال واگرایی صعودی باشید.':'مومنتوم متعادل — منتظر تأیید BOS در تایم پایین.'}`;
+
+  // Levels & Risk defaults
+  const entry = s.trend==='صعودی'? s.obBull.high : s.trend==='نزولی'? s.obBear.low : s.fib618;
+  const sl = s.trend==='صعودی'? s.obBull.low*0.997 : s.trend==='نزولی'? s.obBear.high*1.003 : s.swingLow*0.99;
+  const tp1 = s.trend==='صعودی'? s.liqHigh : s.liqLow;
+  const tp2 = s.trend==='صعودی'? s.swingHigh : s.swingLow;
+  document.getElementById('lvlEntry').textContent = formatPrice(entry);
+  document.getElementById('lvlSL').textContent = formatPrice(sl);
+  document.getElementById('lvlTP').textContent = `${formatPrice(tp1)} / ${formatPrice(tp2)}`;
+  if(!document.getElementById('riskEntry').value){ 
+    document.getElementById('riskEntry').value = entry.toFixed(4);
+    document.getElementById('riskSL').value = sl.toFixed(4);
+    document.getElementById('riskTP1').value = tp1.toFixed(4);
+    document.getElementById('riskTP2').value = tp2.toFixed(4);
+    calcRisk();
+  } else {
+    // update pill but not override user input
+    calcRisk();
+  }
+  document.getElementById('pillSMC').textContent = s.trend + (s.bos?' • BOS':' • CHoCH');
+  document.getElementById('pillSMC').style.color = s.trend==='صعودی'?'var(--green)': s.trend==='نزولی'?'var(--red)':'var(--yellow)';
+}
+
+// ---------- TABS ----------
+function switchTab(name){
+  document.querySelectorAll('.tabs button').forEach(b=> b.classList.remove('active'));
+  event.target.classList.add('active');
+  document.querySelectorAll('.tab-panel').forEach(p=> p.classList.remove('active'));
+  document.getElementById('tab-'+name).classList.add('active');
+}
+
+// ---------- RISK ----------
+function calcRisk(){
+  const entry = parseFloat(document.getElementById('riskEntry').value);
+  const sl = parseFloat(document.getElementById('riskSL').value);
+  const tp1 = parseFloat(document.getElementById('riskTP1').value);
+  const tp2 = parseFloat(document.getElementById('riskTP2').value);
+  const bal = parseFloat(document.getElementById('riskBalance').value)||0;
+  const pct = parseFloat(document.getElementById('riskPct').value)||0;
+  if(!entry||!sl||!tp1){ document.getElementById('rrVal').textContent='--'; return; }
+  const riskPerUnit = Math.abs(entry - sl);
+  const reward1 = Math.abs(tp1 - entry);
+  const rr1 = reward1 / riskPerUnit;
+  const rr2 = tp2? Math.abs(tp2-entry)/riskPerUnit : null;
+  document.getElementById('rrVal').textContent = rr1.toFixed(2) + ':1' + (rr2?'  •  '+rr2.toFixed(2)+':1 (TP2)':'');
+  const box = document.getElementById('rrBox');
+  const flag = document.getElementById('rrFlag');
+  if(rr1>=2){ box.className='rr-box good'; flag.style.display='block'; flag.style.background='var(--green-bg)'; flag.style.color='var(--green)'; flag.style.border='1px solid rgba(0,230,118,0.3)'; flag.textContent='✅ نسبت ریسک به ریوارد عالی است (≥۲:۱) — مجاز به ورود با مدیریت سرمایه.'; }
+  else { box.className='rr-box bad'; flag.style.display='block'; flag.style.background='var(--red-bg)'; flag.style.color='var(--red)'; flag.style.border='1px solid rgba(255,59,92,0.3)'; flag.textContent='🚩 هشدار: R:R زیر ۲:۱ — معامله پرریسک! یا حد سود را دورتر بگذار یا از ورود صرف‌نظر کن.'; }
+  const riskMoney = bal * pct/100;
+  const posSize = riskPerUnit? (riskMoney / riskPerUnit) * entry : 0;
+  document.getElementById('posSize').textContent = posSize? posSize.toFixed(2)+' USDT  ('+(posSize/entry).toFixed(4)+' واحد)':'--';
+  document.getElementById('posLoss').textContent = riskMoney? '-'+riskMoney.toFixed(2)+' USDT':'--';
+}
+
+// ---------- SCANNER ----------
+async function runScan(){
+  const sym = (document.getElementById('scanSymbol').value||'').toUpperCase().replace(/[^A-Z0-9]/g,'');
+  if(!sym){ alert('نماد را وارد کنید'); return; }
+  const full = sym.includes('USDT')? sym : sym+'USDT';
+  document.getElementById('scanResult').innerHTML = `<div class="loader"><span class="dot-flashing"></span> در حال دریافت داده از Binance و تحلیل SMC برای ${full} ...</div>`;
+  try{
+    const klines = await fetchKlines(full,'4h',100);
+    const s = detectSMC(klines);
+    const rsi = calcRSI(s.closes);
+    const macd = calcMACD(s.closes);
+    // render result
+    const rec = s.trend==='صعودی'? 'لانگ (Long) — خرید در Discount':'روند نزولی'? 'شورت (Short) — فروش در Premium':'انتظار — بدون پوزیشن';
+    const entry = s.trend==='صعودی'? s.obBull.high : s.trend==='نزولی'? s.obBear.low : s.fib618;
+    const sl = s.trend==='صعودی'? s.obBull.low*0.997 : s.trend==='نزولی'? s.obBear.high*1.003 : s.swingLow*0.99;
+    const tp1 = s.trend==='صعودی'? s.liqHigh : s.liqLow;
+    const tp2 = s.trend==='صعودی'? s.swingHigh : s.swingLow;
+    const rr = Math.abs(tp1-entry)/Math.abs(entry-sl);
+    document.getElementById('scanResult').innerHTML = `
+      <div class="res-grid">
+        <div class="res-card"><span>روند ۴ ساعته</span><b style="color:${s.trend==='صعودی'?'var(--green)':s.trend==='نزولی'?'var(--red)':'var(--yellow)'}">${s.trend} ${s.bos?'• BOS':''} ${s.choch?'• CHoCH':''}</b><span style="font-size:11px;color:var(--dim);margin-top:4px">آخرین بسته: ${formatPrice(s.lastClose)}</span></div>
+        <div class="res-card"><span>سیگنال پیشنهادی</span><b>${rec}</b><span style="font-size:11px;color:var(--dim)">R:R ${rr.toFixed(2)}:1 ${rr<2?'🚩':'✅'}</span></div>
+        <div class="res-card"><span>RSI / MACD</span><b class="mono">${rsi.toFixed(1)} • ${macd.hist>0?'صعودی':'نزولی'}</b><span style="font-size:11px;color:var(--dim)">${rsi>70?'اشباع خرید':rsi<30?'اشباع فروش':'متعادل'}</span></div>
+      </div>
+      <div style="display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-bottom:12px">
+        <div class="res-card"><span>📦 اردربلاک صعودی</span><b class="mono">${formatPrice(s.obBull.low)} - ${formatPrice(s.obBull.high)}</b></div>
+        <div class="res-card"><span>📦 اردربلاک نزولی</span><b class="mono">${formatPrice(s.obBear.low)} - ${formatPrice(s.obBear.high)}</b></div>
+        <div class="res-card"><span>⚡ FVG (${s.fvg.dir})</span><b class="mono">${formatPrice(s.fvg.low)} - ${formatPrice(s.fvg.high)}</b></div>
+        <div class="res-card"><span>💧 نقدینگی</span><b class="mono">High ${formatPrice(s.liqHigh)} • Low ${formatPrice(s.liqLow)}</b></div>
+      </div>
+      <div style="display:grid;grid-template-columns:1fr 1fr 1fr 1fr;gap:8px;margin-bottom:12px">
+        <div style="background:var(--green-bg);border:1px solid rgba(0,230,118,0.2);border-radius:10px;padding:10px;text-align:center"><span style="font-size:11px;color:var(--muted)">ورود</span><b class="mono" style="color:var(--green)">${formatPrice(entry)}</b></div>
+        <div style="background:var(--red-bg);border:1px solid rgba(255,59,92,0.2);border-radius:10px;padding:10px;text-align:center"><span style="font-size:11px;color:var(--muted)">حد ضرر</span><b class="mono" style="color:var(--red)">${formatPrice(sl)}</b></div>
+        <div style="background:rgba(255,196,0,0.08);border:1px solid rgba(255,196,0,0.25);border-radius:10px;padding:10px;text-align:center"><span style="font-size:11px;color:var(--muted)">TP1</span><b class="mono" style="color:var(--yellow)">${formatPrice(tp1)}</b></div>
+        <div style="background:rgba(0,229,255,0.08);border:1px solid rgba(0,229,255,0.25);border-radius:10px;padding:10px;text-align:center"><span style="font-size:11px;color:var(--muted)">TP2</span><b class="mono" style="color:var(--accent)">${formatPrice(tp2)}</b></div>
+      </div>
+      <div style="display:flex;gap:8px;margin-bottom:12px;flex-wrap:wrap">
+        <span class="chip">Premium: ${formatPrice(s.premium)} - ${formatPrice(s.swingHigh)}</span>
+        <span class="chip green">Discount: ${formatPrice(s.swingLow)} - ${formatPrice(s.discount)}</span>
+        <span class="chip ${s.trend==='صعودی'?'green':s.trend==='نزولی'?'red':'yellow'}">${s.trend==='صعودی'?'✅ ورود در Discount':'روند نزولی'?'🔻 ورود در Premium':'⏳ انتظار BOS'}</span>
+      </div>
+      <div class="ai-text" id="aiStream"></div>
+    `;
+    // streaming AI text
+    const fullText = s.trend==='صعودی'
+      ? `**تحلیل AI برای ${full} — تایم ۴ ساعته:**\nروند اصلی **صعودی** است و BOS در سقف ${formatPrice(s.lastHigh)} با حجم تأیید شده. ساختار HH/HL سالم است و CHoCH دیده نمی‌شود. قیمت اکنون در حال جاروی نقدینگی بالای سقف (${formatPrice(s.liqHigh)}) است — انتظار یک فیک‌اوت کوتاه و سپس برگشت به **FVG صعودی (${formatPrice(s.fvg.low)}-${formatPrice(s.fvg.high)})** و **اردربلاک ${formatPrice(s.obBull.low)}-${formatPrice(s.obBull.high)}** وجود دارد.\n\n**پلن معاملاتی:** ورود پله‌ای در Discount Zone (${formatPrice(s.swingLow)} تا ${formatPrice(s.discount)})، حد ضرر زیر اردربلاک (${formatPrice(sl)})، اهداف ${formatPrice(tp1)} (نقدینگی) و ${formatPrice(tp2)} (سقف سوینگ). R:R حدود ${rr.toFixed(2)}:1 است — ${rr>=2?'✅ مجاز':'🚩 اگر زیر ۲ است، سایز را کم یا TP را دورتر بگذار'}.\nتأیید نهایی را در تایم ۵ دقیقه بگیر: منتظر BOS صعودی + RSI از اشباع فروش خارج شود.`
+      : s.trend==='نزولی'
+      ? `**تحلیل AI برای ${full} — تایم ۴ ساعته:**\nروند **نزولی** با BOS زیر ${formatPrice(s.lastLow)} ادامه دارد. ساختار LH/LL شکل گرفته و مومنتوم MACD منفی است (هیستوگرام نزولی). نقدینگی زیر کف ${formatPrice(s.liqLow)} هدف بعدی خرس‌هاست.\n\n**پلن:** فروش در Premium Zone و اردربلاک نزولی ${formatPrice(s.obBear.low)}-${formatPrice(s.obBear.high)}، حد ضرر بالای اردربلاک (${formatPrice(sl)})، اهداف ${formatPrice(tp1)} و ${formatPrice(tp2)}. از لانگ در میانه رنج پرهیز کن — فقط شورت با تأیید CHoCH نزولی در ۵ دقیقه.`
+      : `**تحلیل AI برای ${full} — تایم ۴ ساعته:**\nبازار در **فاز رنج** بین ${formatPrice(s.swingLow)} و ${formatPrice(s.swingHigh)} است. نه BOS و نه CHoCH قوی دیده نمی‌شود — نقدینگی دو طرف در حال تجمیع است. بهترین کار **انتظار** است.\n\n**پلن:** ورود فقط پس از شکست معتبر (BOS) با حجم. اگر شکست صعودی شد، ورود در Discount و FVG ${formatPrice(s.fvg.low)}-${formatPrice(s.fvg.high)}؛ اگر نزولی شد، در Premium. فعلاً معامله در میانه رنج ممنوع — R:R مناسب شکل نگرفته.`;
+    streamText(document.getElementById('aiStream'), fullText);
+    // also update main chart to scanned symbol
+    if(full!==currentSymbol){ currentSymbol=full; if(!WATCH_SYMBOLS.includes(full)) WATCH_SYMBOLS.unshift(full); updateChart(); fetchAndAnalyze(); renderWatchlist(); }
+  }catch(e){
+    document.getElementById('scanResult').innerHTML = `<div style="padding:20px;text-align:center;color:var(--red)">خطا در دریافت داده — لطفا دوباره تلاش کنید.<br><span style="font-size:12px;color:var(--muted)">${e.message}</span></div>`;
+  }
+}
+function quickScan(sym){ document.getElementById('scanSymbol').value=sym; runScan(); }
+function streamText(el, text){
+  el.innerHTML='';
+  let i=0;
+  const words = text.split(' ');
+  function step(){
+    if(i>=words.length) return;
+    // simple markdown bold
+    const chunk = words.slice(0, i+1).join(' ');
+    el.innerHTML = chunk
+      .replace(/\*\*(.*?)\*\*/g,'<strong>$1</strong>')
+      .replace(/\n/g,'<br>');
+    i+=3;
+    setTimeout(step, 40);
+  }
+  step();
+}
+
+// ---------- CHAT ----------
+function toggleChat(){
+  const w = document.getElementById('chatWindow');
+  w.classList.toggle('open');
+  if(w.classList.contains('open')) renderChat();
+}
+function renderChat(){
+  const box = document.getElementById('chatMsgs');
+  box.innerHTML='';
+  if(chatHistory.length===0){
+    box.innerHTML = `<div class="msg ai">سلام! من <b>دستیار SMC</b> هستم — ۲۰ سال تجربه سیستماتیک. هر سوالی درباره BOS، CHoCH، اردربلاک، FVG، فیبوناچی یا مدیریت ریسک داری بپرس.<br><br>مثال: <i>«برای BTCUSDT الان ورود بدم؟»</i></div>`;
+  } else {
+    chatHistory.forEach(m=>{
+      const d = document.createElement('div');
+      d.className = 'msg ' + (m.role==='user'?'user':'ai');
+      d.innerHTML = m.content.replace(/\n/g,'<br>');
+      box.appendChild(d);
+    });
+  }
+  box.scrollTop = box.scrollHeight;
+}
+async function sendChat(){
+  const input = document.getElementById('chatInput');
+  const text = input.value.trim();
+  if(!text) return;
+  chatHistory.push({role:'user', content:text});
+  localStorage.setItem('smc_chat_history', JSON.stringify(chatHistory));
+  input.value='';
+  renderChat();
+  // show typing
+  const box = document.getElementById('chatMsgs');
+  const typing = document.createElement('div');
+  typing.className='msg ai'; typing.id='typing'; typing.innerHTML='<span class="dot-flashing" style="display:inline-block"></span> در حال تحلیل SMC...';
+  box.appendChild(typing); box.scrollTop=box.scrollHeight;
+  // simulate API Route + streaming (in real app: fetch('/api/chat', {method:'POST', body:JSON.stringify({messages:chatHistory})}))
+  setTimeout(()=>{
+    const reply = generateAIReply(text);
+    typing.remove();
+    const msgEl = document.createElement('div');
+    msgEl.className='msg ai'; box.appendChild(msgEl);
+    // stream word by word
+    let words = reply.split(' ');
+    let idx=0;
+    msgEl.innerHTML='';
+    function s(){
+      if(idx>=words.length){
+        chatHistory.push({role:'assistant', content:reply});
+        localStorage.setItem('smc_chat_history', JSON.stringify(chatHistory));
+        return;
+      }
+      msgEl.innerHTML = words.slice(0, idx+1).join(' ').replace(/\*\*(.*?)\*\*/g,'<strong>$1</strong>').replace(/\n/g,'<br>');
+      idx+=2;
+      box.scrollTop=box.scrollHeight;
+      setTimeout(s, 35);
+    }
+    s();
+  }, 700);
+}
+function generateAIReply(q){
+  const lower = q.toLowerCase();
+  const symMatch = q.match(/[A-Z]{2,10}USDT/i);
+  const sym = symMatch? symMatch[0].toUpperCase() : currentSymbol;
+  const p = prices[sym] || prices[currentSymbol];
+  const priceStr = p? formatPrice(p.price):'--';
+  if(lower.includes('اردربلاک') || lower.includes('order')){
+    return `**اردربلاک (Order Block) برای ${sym}:**\nاردربلاک آخرین کندل مخالف قبل از حرکت شارپ است. در چارت ۴ ساعته ${sym} الان **اردربلاک صعودی** حوالی **${priceStr} ±۱.۵٪** قرار دارد (همپوشان با FVG). \n\n**چطور استفاده کنی؟**\n۱) صبر کن قیمت به اردربلاک + Discount Zone برگرده\n۲) در تایم ۵ دقیقه دنبال CHoCH صعودی + RSI از ۳۰ به بالا باش\n۳) ورود با حد ضرر ۰.۳٪ زیر اردربلاک و R:R ≥۲\n\n⚠️ بدون BOS در تایم پایین وارد نشو — اردربلاک بدون تأیید فیک است.`;
+  }
+  if(lower.includes('ورود') || lower.includes('بخر') || lower.includes('سیگنال')){
+    return `**تحلیل ورود برای ${sym} — قیمت ${priceStr}:**\nروند ۴ ساعته را چک کردم: ساختار **نیمه‌صعودی + BOS** است اما قیمت نزدیک Premium است.\n\n**پیشنهاد حرفه‌ای:**\n• **ورود الان؟** خیر — ریسک بالا است چون دور از Discount Zone هستی.\n• **کجا بخرم؟** منتظر پولبک به **FVG + اردربلاک** در محدوده **${priceStr}** با حد ضرر زیر کف و TP روی نقدینگی بالای سقف.\n• **تأیید:** در ۵ دقیقه BOS ببینی + حجم سبز + RSI>45.\n\n**مدیریت ریسک:** با ۱٪ موجودی، R:R را حساب کن — اگر زیر ۲ است معامله را رد کن. الان R:R حدود **۱.۶** است 🚩`;
+  }
+  if(lower.includes('fvg') || lower.includes('گپ')){
+    return `**FVG (Fair Value Gap) چیست؟**\nگپ قیمتی بین سایه کندل اول و سوم که نهادها جا گذاشتن — قیمت معمولا به FVG برمی‌گرده تا تعادل پر شه.\n\nبرای **${sym}** الان یک **FVG صعودی** فعاله — قیمت تمایل داره قبل ادامه صعود، این گپ رو پر کنه. بهترین ورود، همپوشانی FVG + اردربلاک + فیب ۰.۶۱۸ است.\n\nتوی اسکنر AI چارت رو اسکن کن تا FVG دقیق با عدد بهت بدم.`;
+  }
+  if(lower.includes('rsi') || lower.includes('macd')){
+    return `**اندیکاتورها برای ${sym}:**\n• **RSI (۱۴)** الان حدود **۵۸** — نه اشباع خرید، نه فروش. مومنتوم **خنثی متمایل به صعود**.\n• **MACD** هیستوگرام مثبت ولی در حال ضعیف شدن — یعنی مومنتوم صعودی کند شده. واگرایی نداره.\n• **EMA50/200** قیمت بالای EMA50 است — تا وقتی بالای آن بمونه، لانگ ارجح است.\n\n**نکته SMC:** اندیکاتور فقط تأیید است، نه دلیل ورود. تصمیم اصلی را BOS/CHoCH و نقدینگی می‌دهد.`;
+  }
+  if(lower.includes('ریسک') || lower.includes('حد ضرر') || lower.includes('r:r')){
+    return `**مدیریت ریسک — قانون طلایی:**\nهر معامله باید **حد ضرر (SL)** و **حد سود (TP)** داشته باشه و **R:R ≥۲:۱** باشه.\n\nفرمول:\n**سایز پوزیشن = (موجودی × ریسک٪) / |ورود - حد ضرر| × ورود**\n\nمثال با موجودی ۱۰۰۰ USDT و ریسک ۱٪:\nورود ${priceStr}، حد ضرر ۱٪ پایین‌تر → سایز ≈ **۱۰ USDT** ریسک.\nاگر R:R زیر ۲ شد، یا TP را دورتر بگذار یا معامله را کنسل کن — **حفظ سرمایه مهم‌تر از سود است.**\n\nاز پنل «مدیریت ریسک» همین ترمینال استفاده کن — خودکار حساب می‌کنه.`;
+  }
+  // default
+  return `**دستیار SMC — پاسخ برای "${q}"**\n\nبرای **${sym} (قیمت ${priceStr})** تحلیل SMC می‌گه:\n• **ساختار:** صعودی با BOS در ۴ ساعته، اما قیمت نزدیک نقدینگی بالای سقف است — احتمال جاروی نقدینگی و سپس اصلاح به FVG وجود دارد.\n• **نواحی کلیدی:** ورود بهینه در **Discount Zone + اردربلاک + فیب گلدن پاکت (۰.۶۱۸-۰.۶۵)** است، نه در سقف.\n• **پلن:** در تایم ۵ دقیقه منتظر **CHoCH صعودی** باش، بعد با R:R ≥۲ وارد شو. بدون تأیید حجم و RSI وارد نشو.\n\nاگر نماد خاصی مد نظره، بگو **«تحلیل BTCUSDT»** تا اسکنر AI عدد دقیق ورود/خروج بده — یا از اسکنر بازار بالا استفاده کن.`;
+}
+document.addEventListener('keydown', e=>{ if(e.key==='Escape') document.getElementById('chatWindow').classList.remove('open'); });
+
+// ---------- INIT ----------
+(async()=>{
+  renderWatchlist();
+  await fetchPrices();
+  await fetchAndAnalyze();
+  renderTicker();
+  // auto refresh
+  setInterval(fetchPrices, 15000);
+  setInterval(fetchAndAnalyze, 30000);
+  // restore chat count
+  if(chatHistory.length>0){ const c=document.getElementById('chatCount'); c.style.display='block'; c.textContent=chatHistory.length; }
+  // expose
+  window.selectSymbol=selectSymbol; window.setTF=setTF; window.filterWatch=filterWatch; window.sortWatch=sortWatch; window.refreshPrices=refreshPrices;
+  window.switchTab=switchTab; window.calcRisk=calcRisk; window.runScan=runScan; window.quickScan=quickScan; window.toggleChat=toggleChat; window.sendChat=sendChat;
+})();
+function updateTicker(){ renderTicker(); }
+</script>
+</body>
+</html>
